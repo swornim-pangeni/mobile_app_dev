@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Aggregator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">GameHive</div>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <ul class="nav-links" id="navMenu">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Popular</a></li>
+            <li><a href="#">New Releases</a></li>
+            <li><a href="#">Categories</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <section class="highlight">
+            <h2>🔥 Game of the Day</h2>
+            <a href="#" id="mostPlayedGameLink">
+                <div class="featured-game" id="mostPlayedGame"></div>
+            </a>
+        </section>
+
+        <section class="highlight">
+            <h2>🏆 Game of the Week</h2>
+            <a href="#" id="bestGameLink">
+                <div class="featured-game" id="bestGameOfWeek"></div>
+            </a>
+        </section>
+
+        <section class="game-category">
+            <h2>🕹️ Arcade Games</h2>
+            <div class="game-list" id="arcadeGames"></div>
+        </section>
+
+        <section class="game-category">
+            <h2>⚡ Instant Play</h2>
+            <div class="game-list" id="instantPlay"></div>
+        </section>
+
+        <section class="game-category">
+            <h2>🎮 Multiplayer</h2>
+            <div class="game-list" id="multiplayerGames"></div>
+        </section>
+
+        <section class="game-category">
+            <h2>🧠 Strategy Games</h2>
+            <div class="game-list" id="strategyGames"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 GameHive. All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
