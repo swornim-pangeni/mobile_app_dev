@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHive - Play Games Instantly in Your Browser</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="landing-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>GameHive</h1>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <i class="fas fa-times" id="closeMenu"></i>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#games">Games</a></li>
+                    <li><a href="#cloud-gaming">Cloud Gaming</a></li>
+                </ul>
+            </div>
+            <i class="fas fa-bars" id="openMenu" style="display: none;"></i>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Play Instantly, No Downloads Required</h1>
+            <p>Access hundreds of games directly in your browser. From casual mini-games to high-end PC titles streamed via our cloud technology.</p>
+            <div class="cta-buttons">
+                <a href="index.html" class="cta-primary">Start Playing Now</a>
+                <a href="#games" class="cta-secondary">Browse Games</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://assets.euromoneydigital.com/dims4/default/01fc673/2147483647/strip/true/crop/995x559+0+0/resize/840x472!/quality/90/?url=http%3A%2F%2Feuromoney-brightspot.s3.amazonaws.com%2Fa5%2F90%2F0f1167c248d59035af5b47af3fc6%2Fgaming-virtual-blue-adobestock.jpg" alt="Cloud gaming platform screenshot">
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <h2>Why Choose GameHive?</h2>
+        <div class="feature-cards">
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Instant Play</h3>
+                <p>No downloads or installs. Play any game instantly in your browser.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-cloud"></i>
+                <h3>Cloud Gaming</h3>
+                <p>Play high-end PC games on any device through our cloud streaming technology.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-gamepad"></i>
+                <h3>Variety of Games</h3>
+                <p>From quick mini-games to immersive AAA titles, all in one platform.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Cross-Platform</h3>
+                <p>Play seamlessly across PC, tablet, and mobile with synchronized progress.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="games" class="popular-games">
+        <h2>Featured Mini-Games</h2>
+        <p class="section-subtext">Instantly playable in your browser, no downloads needed</p>
+        <div class="game-slider">
+            <div class="game-card">
+                <img src="https://wallpapers.com/images/featured/puzzle-games-14qbx4lgo1g7ck8d.jpg" alt="Puzzle Game">
+                <h3>Puzzle Master</h3>
+                <p>Brain teasers & puzzles</p>
+                <a href="#" class="play-now-btn">Play Now</a>
+            </div>
+            <div class="game-card">
+                <img src="https://png.pngtree.com/thumb_back/fh260/background/20240522/pngtree-arcade-retro-game-terminal-generate-ai-image_15730211.jpg" alt="Arcade Game">
+                <h3>Arcade Classics</h3>
+                <p>Retro arcade games</p>
+                <a href="#" class="play-now-btn">Play Now</a>
+            </div>
+            <div class="game-card">
+                <img src="https://wallpapers.com/images/featured/card-games-nqjmb9v0v49v2mxl.jpg" alt="Card Game">
+                <h3>Card Showdown</h3>
+                <p>Strategy card battles</p>
+                <a href="#" class="play-now-btn">Play Now</a>
+            </div>
+            <div class="game-card">
+                <img src="https://c0.wallpaperflare.com/preview/795/151/722/alphabet-close-up-game-glass.jpg" alt="Word Game">
+                <h3>Word Challenge</h3>
+                <p>Test your vocabulary</p>
+                <a href="#" class="play-now-btn">Play Now</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="cloud-gaming" class="cloud-gaming">
+        <h2>Cloud Gaming Platform</h2>
+        <p class="section-subtext">Play high-end PC games directly on your mobile device</p>
+        
+        <div class="cloud-info">
+            <div class="cloud-image">
+                <img src="https://www.also.com/ec/cms5/6000/blog/is-cloud-gaming-the-future-280006852_800px.png" alt="Cloud gaming demonstration">
+            </div>
+            <div class="cloud-content">
+                <h3>Gaming Without Limits</h3>
+                <p>Experience the latest AAA titles on any device without worrying about hardware requirements. Our cloud technology streams games directly to your browser.</p>
+                
+                <ul class="cloud-features">
+                    <li><i class="fas fa-check"></i> No expensive gaming PC required</li>
+                    <li><i class="fas fa-check"></i> Play on any device with a browser</li>
+                    <li><i class="fas fa-check"></i> HD graphics with minimal latency</li>
+                    <li><i class="fas fa-check"></i> Save your progress across devices</li>
+                </ul>
+                
+                <a href="#" class="cta-primary cloud-cta">Try Cloud Gaming</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Create an Account</h3>
+                <p>Sign up for free and browse our extensive game library.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Choose a Game</h3>
+                <p>Select from mini-games or cloud-streamed AAA titles.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Play Instantly</h3>
+                <p>Start playing immediately in your browser, no downloads needed.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <h2>What Gamers Say</h2>
+        <div class="testimonial-container">
+            <div class="testimonial">
+                <div class="quote"><i class="fas fa-quote-left"></i></div>
+                <p>"I can finally play high-end games on my older laptop. The streaming quality is amazing with barely any lag!"</p>
+                <div class="user">
+                    <h4>Alex M.</h4>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <div class="quote"><i class="fas fa-quote-left"></i></div>
+                <p>"The mini-games are perfect for my daily commute. I love that I can just open my phone and play without installing anything."</p>
+                <div class="user">
+                    <h4>Sarah K.</h4>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter">
+        <h2>Stay Updated</h2>
+        <p>Subscribe to our newsletter for the latest games and platform updates.</p>
+        <form id="newsletter-form">
+            <input type="email" placeholder="Your email address" required>
+            <button type="submit">Subscribe</button>
+        </form>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2>GameHive</h2>
+                <p>Play instantly, anywhere</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#games">Mini-Games</a></li>
+                    <li><a href="#cloud-gaming">Cloud Gaming</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h3>Connect With Us</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 GameHive. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="landing-scripts.js"></script>
+</body>
+</html>
