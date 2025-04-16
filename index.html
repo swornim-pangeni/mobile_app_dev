@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List App</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 700px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #e9ecef;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        input[type="text"], input[type="date"] {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 16px;
+            min-width: 150px;
+        }
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        .add-btn {
+            background-color: #007bff;
+        }
+        .add-btn:hover {
+            background-color: #0056b3;
+        }
+        .update-btn {
+            background-color: #28a745;
+        }
+        .update-btn:hover {
+            background-color: #218838;
+        }
+        .task-list {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .task {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #f1f1f1;
+            transition: background-color 0.2s;
+        }
+        .task:last-child {
+            border-bottom: none;
+        }
+        .task.completed span {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+        .task input[type="checkbox"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+        }
+        .task-details {
+            flex: 1;
+        }
+        .task-details span {
+            font-size: 16px;
+            color: #343a40;
+        }
+        .task-details .due-date {
+            font-size: 14px;
+            color: #6c757d;
+        }
+        .task-actions button {
+            margin-left: 10px;
+            padding: 8px 15px;
+            font-size: 13px;
+        }
+        .edit-btn {
+            background-color: #ffc107;
+        }
+        .edit-btn:hover {
+            background-color: #e0a800;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+        }
+        .delete-btn:hover {
+            background-color: #b02a37;
+        }
+    </style>
+</head>
+<body>
+    <h1>My To-Do List</h1>
+
+    <!-- Form to add or update tasks -->
+    <div class="form-container">
+        <input type="text" id="taskInput" placeholder="Enter task description">
+        <input type="date" id="dueDateInput">
+        <button class="add-btn" onclick="addTask()">Add Task</button>
+        <button class="update-btn" onclick="updateTask()" id="updateBtn" style="display: none;">Update Task</button>
+    </div>
+
+    <!-- List to display tasks -->
+    <div class="task-list" id="taskList"></div>
+
+    <!-- Firebase SDK and Logic -->
+    <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDoYckL-ZpBv81ukP5RlmfaUM2Nv91chQ4",
+            authDomain: "assignment-4d755.firebaseapp.com",
+            projectId: "assignment-4d755",
+            storageBucket: "assignment-4d755.firebasestorage.app",
+            messagingSenderId: "199527581527",
+            appId: "1:199527581527:web:1656dde8c24489fdbfa012",
+            measurementId: "G-KH0GVY9D5K"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Reference to the 'tasks' node
+        const tasksRef = ref(database, 'tasks');
+
+        // Store the ID of the task being updated
+        let currentUpdateId = null;
+
+        // Add a new task
+        window.addTask = function() {
+            const taskInput = document.getElementById("taskInput");
+            const dueDateInput = document.getElementById("dueDateInput");
+            const taskName = taskInput.value.trim();
+            const dueDate = dueDateInput.value;
+
+            if (taskName === "") {
+                alert("Please enter a task description!");
+                return;
+            }
+
+            // Push new task to Firebase
+            push(tasksRef, {
+                name: taskName,
+                dueDate: dueDate || "No due date",
+                completed: false
+            }).then(() => {
+                taskInput.value = ""; // Clear inputs
+                dueDateInput.value = "";
+            }).catch((error) => {
+                console.error("Error adding task: ", error);
+            });
+        };
+
+        // Prepare to update a task
+        window.prepareUpdate = function(id, name, dueDate, completed) {
+            const taskInput = document.getElementById("taskInput");
+            const dueDateInput = document.getElementById("dueDateInput");
+            const updateBtn = document.getElementById("updateBtn");
+
+            // Fill form with task details
+            taskInput.value = name;
+            dueDateInput.value = dueDate === "No due date" ? "" : dueDate;
+            currentUpdateId = id;
+
+            // Show update button, hide add button
+            updateBtn.style.display = "inline";
+            document.querySelector(".add-btn").style.display = "none";
+        };
+
+        // Update a task
+        window.updateTask = function() {
+            const taskInput = document.getElementById("taskInput");
+            const dueDateInput = document.getElementById("dueDateInput");
+            const taskName = taskInput.value.trim();
+            const dueDate = dueDateInput.value;
+
+            if (taskName === "") {
+                alert("Please enter a task description!");
+                return;
+            }
+
+            if (currentUpdateId) {
+                // Update task in Firebase
+                update(ref(database, `tasks/${currentUpdateId}`), {
+                    name: taskName,
+                    dueDate: dueDate || "No due date"
+                }).then(() => {
+                    taskInput.value = ""; // Clear inputs
+                    dueDateInput.value = "";
+                    currentUpdateId = null;
+                    // Show add button, hide update button
+                    document.getElementById("updateBtn").style.display = "none";
+                    document.querySelector(".add-btn").style.display = "inline";
+                }).catch((error) => {
+                    console.error("Error updating task: ", error);
+                });
+            }
+        };
+
+        // Toggle task completion
+        window.toggleComplete = function(id, completed) {
+            update(ref(database, `tasks/${id}`), {
+                completed: !completed
+            }).catch((error) => {
+                console.error("Error updating completion: ", error);
+            });
+        };
+
+        // Delete a task
+        window.deleteTask = function(id) {
+            remove(ref(database, `tasks/${id}`)).catch((error) => {
+                console.error("Error deleting task: ", error);
+            });
+        };
+
+        // Listen for real-time changes
+        onValue(tasksRef, (snapshot) => {
+            const taskList = document.getElementById("taskList");
+            taskList.innerHTML = ""; // Clear list
+
+            const data = snapshot.val();
+            if (data) {
+                Object.keys(data).forEach((key) => {
+                    const task = data[key];
+                    const div = document.createElement("div");
+                    div.className = `task ${task.completed ? 'completed' : ''}`;
+                    div.innerHTML = `
+                        <input type="checkbox" ${task.completed ? 'checked' : ''} 
+                               onchange="toggleComplete('${key}', ${task.completed})">
+                        <div class="task-details">
+                            <span>${task.name}</span>
+                            <div class="due-date">Due: ${task.dueDate}</div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="edit-btn" 
+                                    onclick="prepareUpdate('${key}', '${task.name}', '${task.dueDate}', ${task.completed})">
+                                Edit
+                            </button>
+                            <button class="delete-btn" onclick="deleteTask('${key}')">
+                                Delete
+                            </button>
+                        </div>
+                    `;
+                    taskList.appendChild(div);
+                });
+            } else {
+                taskList.innerHTML = "<p>No tasks yet. Add one above!</p>";
+            }
+        });
+    </script>
+</body>
+</html>
