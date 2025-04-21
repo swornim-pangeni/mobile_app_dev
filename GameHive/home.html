@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHive | Player Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg: #121212;
+            --secondary-bg: #1E1E1E;
+            --accent: #6C63FF;
+            --text: #E0E0E0;
+            --text-light: #A0A0A0;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: var(--primary-bg);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--secondary-bg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            flex-wrap: wrap;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        .logo span {
+            color: var(--accent);
+        }
+        .nav-links {
+            display: flex;
+            width: 100%;
+            overflow-x: auto;
+            padding: 1rem 0 0.5rem;
+            gap: 1.5rem;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+        }
+        .nav-links::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome/Safari */
+        }
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+        .nav-links a:hover {
+            color: var(--text);
+        }
+        .nav-links a.active {
+            color: var(--accent);
+        }
+        .mobile-top-bar {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+        }
+        .search-bar {
+            display: flex;
+            max-width: 100%;
+            flex: 1;
+            margin-right: 1rem;
+        }
+        .search-bar input {
+            padding: 0.6rem 1rem;
+            background: var(--primary-bg);
+            border: 1px solid #333;
+            border-radius: 8px 0 0 8px;
+            color: var(--text);
+            width: 100%;
+            font-size: 0.9rem;
+        }
+        .search-bar button {
+            padding: 0.6rem 1rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+        }
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .menu-toggle {
+            display: none;
+        }
+        
+        /* MAIN CONTENT */
+        .container {
+            padding: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .welcome-banner {
+            background: linear-gradient(135deg, #1E1E1E 0%, #121212 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid #333;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .welcome-text h2 {
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        .welcome-text p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        .welcome-banner button {
+            padding: 0.7rem 1.5rem;
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
+        /* CATEGORY PILLS */
+        .categories {
+            display: flex;
+            gap: 0.8rem;
+            overflow-x: auto;
+            padding: 0.5rem 0 1.5rem 0;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+        .category {
+            padding: 0.5rem 1rem;
+            background: var(--secondary-bg);
+            border-radius: 20px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .category:hover, .category.active {
+            background: var(--accent);
+        }
+        
+        /* GAME SECTIONS */
+        .section {
+            margin-bottom: 2rem;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .section-header h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+        }
+        .view-all {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+        .game-card {
+            background: var(--secondary-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            position: relative;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+        .game-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+        .game-info {
+            padding: 0.8rem;
+        }
+        .game-card h4 {
+            margin-bottom: 0.3rem;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .game-card p {
+            color: var(--text-light);
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+        .rating {
+            color: gold;
+        }
+        .price {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .game-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+        .cloud-tag {
+            background: var(--accent);
+            color: white;
+        }
+        .instant-tag {
+            background: #4CAF50;
+            color: white;
+        }
+
+        /* MOBILE FOOTER NAVIGATION */
+        .mobile-footer-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: var(--secondary-bg);
+            z-index: 100;
+            padding: 0.7rem 0;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .footer-nav-links {
+            display: flex;
+            justify-content: space-around;
+        }
+        .footer-nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.7rem;
+        }
+        .footer-nav-links a i {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+        .footer-nav-links a.active {
+            color: var(--accent);
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-links {
+                order: 3;
+                margin-top: 0.5rem;
+                padding-bottom: 0;
+            }
+            .welcome-banner {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+            }
+            .mobile-footer-nav {
+                display: block;
+            }
+            .container {
+                padding-bottom: 5rem; /* Add space for footer nav */
+            }
+            .game-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            .game-card img {
+                height: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 0.8rem;
+            }
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+            .search-bar input {
+                width: 100%;
+                font-size: 0.8rem;
+            }
+            .welcome-text h2 {
+                font-size: 1.2rem;
+            }
+            .section-header h3 {
+                font-size: 1rem;
+            }
+            .game-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .game-card h4 {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* For extra small devices */
+        @media (max-width: 350px) {
+            .game-grid {
+                grid-template-columns: 1fr;
+            }
+            .mobile-top-bar {
+                flex-wrap: wrap;
+                gap: 0.8rem;
+            }
+            .search-bar {
+                order: 2;
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="mobile-top-bar">
+            <div class="logo">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L3 7L12 12L21 7L12 2Z" stroke="#6C63FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3 12L12 17L21 12" stroke="#6C63FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3 17L12 22L21 17" stroke="#6C63FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h1>Game<span>Hive</span></h1>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search games...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="user-menu">
+                <a href="#" style="color: var(--text-light);"><i class="fas fa-bell"></i></a>
+                <div class="user-avatar">JS</div>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="active"><i class="fas fa-home"></i> Home</a>
+            <a href="#"><i class="fas fa-fire"></i> Trending</a>
+            <a href="#"><i class="fas fa-gamepad"></i> My Library</a>
+            <a href="#"><i class="fas fa-cloud"></i> Cloud Games</a>
+            <a href="#"><i class="fas fa-bolt"></i> Instant Games</a>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <!-- WELCOME BANNER -->
+        <div class="welcome-banner">
+            <div class="welcome-text">
+                <h2>Welcome back, Jason!</h2>
+                <p>Ready to continue your gaming adventure?</p>
+            </div>
+            <button>
+                <i class="fas fa-gamepad"></i> Resume Playing
+            </button>
+        </div>
+
+        <!-- CATEGORIES -->
+        <div class="categories">
+            <div class="category active"><i class="fas fa-border-all"></i> All</div>
+            <div class="category"><i class="fas fa-running"></i> Action</div>
+            <div class="category"><i class="fas fa-dragon"></i> Adventure</div>
+            <div class="category"><i class="fas fa-chess"></i> Strategy</div>
+            <div class="category"><i class="fas fa-puzzle-piece"></i> Puzzle</div>
+            <div class="category"><i class="fas fa-rocket"></i> Sci-Fi</div>
+            <div class="category"><i class="fas fa-hat-wizard"></i> RPG</div>
+            <div class="category"><i class="fas fa-car"></i> Racing</div>
+            <div class="category"><i class="fas fa-football-ball"></i> Sports</div>
+        </div>
+
+        <!-- CONTINUE PLAYING -->
+        <section class="section">
+            <div class="section-header">
+                <h3><i class="fas fa-history"></i> Continue Playing</h3>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="game-grid" id="continue-playing">
+                <!-- Filled by JavaScript -->
+            </div>
+        </section>
+
+        <!-- RECOMMENDED FOR YOU -->
+        <section class="section">
+            <div class="section-header">
+                <h3><i class="fas fa-thumbs-up"></i> Recommended For You</h3>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="game-grid" id="recommended">
+                <!-- Filled by JavaScript -->
+            </div>
+        </section>
+
+        <!-- TRENDING GAMES -->
+        <section class="section">
+            <div class="section-header">
+                <h3><i class="fas fa-fire"></i> Trending Now</h3>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="game-grid" id="trending">
+                <!-- Filled by JavaScript -->
+            </div>
+        </section>
+
+        <!-- CLOUD GAMES -->
+        <section class="section">
+            <div class="section-header">
+                <h3><i class="fas fa-cloud"></i> Cloud Games</h3>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="game-grid" id="cloud-games">
+                <!-- Filled by JavaScript -->
+            </div>
+        </section>
+
+        <!-- INSTANT GAMES -->
+        <section class="section">
+            <div class="section-header">
+                <h3><i class="fas fa-bolt"></i> Instant Games</h3>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="game-grid" id="instant-games">
+                <!-- Filled by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- MOBILE FOOTER NAVIGATION -->
+    <div class="mobile-footer-nav">
+        <div class="footer-nav-links">
+            <a href="#" class="active"><i class="fas fa-home"></i> Home</a>
+            <a href="#"><i class="fas fa-search"></i> Search</a>
+            <a href="#"><i class="fas fa-gamepad"></i> Library</a>
+            <a href="#"><i class="fas fa-cloud"></i> Cloud</a>
+            <a href="#"><i class="fas fa-user"></i> Profile</a>
+        </div>
+    </div>
+
+    <script>
+        // Sample game data
+        const games = {
+            continuePlaying: [
+                { 
+                    title: "Cyber Runner", 
+                    developer: "Neon Games", 
+                    rating: 4, 
+                    price: "$14.99", 
+                    progress: "75%",
+                    thumbnail: "/Thumbnails/CyberRunner.jpg",
+                    type: "cloud" 
+                },
+                { 
+                    title: "Pixel Quest", 
+                    developer: "Retro Studios", 
+                    rating: 5, 
+                    price: "$9.99",
+                    progress: "42%", 
+                    thumbnail: "/Thumbnails/PixelQuest.jpg",
+                    type: "instant" 
+                }
+            ],
+            recommended: [
+                { 
+                    title: "Space Explorer", 
+                    developer: "Cosmic Games", 
+                    rating: 4, 
+                    price: "$12.99", 
+                    thumbnail: "/Thumbnails/SpaceExplorer.jpg",
+                    type: "cloud" 
+                },
+                { 
+                    title: "Dragon Tales", 
+                    developer: "Fantasy Forge", 
+                    rating: 5, 
+                    price: "$19.99", 
+                    thumbnail: "/Thumbnails/DragonTales.jpg",
+                    type: "cloud" 
+                },
+                { 
+                    title: "Puzzle Master", 
+                    developer: "Mind Games", 
+                    rating: 4, 
+                    price: "$7.99", 
+                    thumbnail: "/Thumbnails/PuzzleMaster.jpg",
+                    type: "instant" 
+                },
+                { 
+                    title: "Racing Legends", 
+                    developer: "Speed Studios", 
+                    rating: 3, 
+                    price: "$14.99", 
+                    thumbnail: "/Thumbnails/RacingLegends.jpg",
+                    type: "cloud" 
+                }
+            ],
+            trending: [
+                { 
+                    title: "Neon Nights", 
+                    developer: "Cyberpunk Studios", 
+                    rating: 5, 
+                    price: "$24.99", 
+                    thumbnail: "/Thumbnails/NeonNights.jpg",
+                    type: "cloud" 
+                },
+                { 
+                    title: "Forest Kingdom", 
+                    developer: "Nature Games", 
+                    rating: 4, 
+                    price: "$15.99", 
+                    thumbnail: "/Thumbnails/ForestKingdom.jpg",
+                    type: "cloud" 
+                },
+                { 
+                    title: "Quick Draw", 
+                    developer: "Wild West Games", 
+                    rating: 3, 
+                    price: "$8.99", 
+                    thumbnail: "/Thumbnails/QuickDraw.jpg",
+                    type: "instant" 
+                },
+                { 
+                    title: "Space Command", 
+                    developer: "Galaxy Studios", 
+                    rating: 4, 
+                    price: "$19.99", 
+                    thumbnail: "/Thumbnails/SpaceCommand.jpg",
+                    type: "cloud" 
+                }
+            ],
+            cloudGames: [
+                { 
+                    title: "Astral Odyssey", 
+                    developer: "Stellar Games", 
+                    rating: 5, 
+                    price: "$29.99", 
+                    thumbnail: "/api/placeholder/240/140?text=Astral+Odyssey",
+                    type: "cloud" 
+                },
+                { 
+                    title: "Monster Hunt", 
+                    developer: "Creature Studios", 
+                    rating: 4, 
+                    price: "$19.99", 
+                    thumbnail: "/api/placeholder/240/140?text=Monster+Hunt",
+                    type: "cloud" 
+                },
+                { 
+                    title: "Medieval Kingdoms", 
+                    developer: "History Games", 
+                    rating: 4, 
+                    price: "$24.99", 
+                    thumbnail: "/api/placeholder/240/140?text=Medieval+Kingdoms",
+                    type: "cloud" 
+                },
+                { 
+                    title: "Future Racer", 
+                    developer: "Velocity Studios", 
+                    rating: 3, 
+                    price: "$15.99", 
+                    thumbnail: "/api/placeholder/240/140?text=Future+Racer",
+                    type: "cloud" 
+                }
+            ],
+            instantGames: [
+                { 
+                    title: "Puzzle Blocks", 
+                    developer: "Brain Games", 
+                    rating: 4, 
+                    price: "$5.99", 
+                    thumbnail: "/api/placeholder/240/140?text=Puzzle+Blocks",
+                    type: "instant" 
+                },
+                { 
+                    title: "Word Master", 
+                    developer: "Letter Studios", 
+                    rating: 3, 
+                    price: "$3.99", 
+                    thumbnail: "/api/placeholder/240/140?text=Word+Master",
+                    type: "instant" 
+                },
+                { 
+                    title: "Candy Match", 
+                    developer: "Sweet Games", 
+                    rating: 4, 
+                    price: "$4.99", 
+                    thumbnail: "/api/placeholder/240/140?text=Candy+Match",
+                    type: "instant" 
+                },
+                { 
+                    title: "Tiny Farm", 
+                    developer: "Rural Studios", 
+                    rating: 5, 
+                    price: "$6.99", 
+                    thumbnail: "/api/placeholder/240/140?text=Tiny+Farm",
+                    type: "instant" 
+                }
+            ]
+        };
+
+        // Create game cards
+        function createGameCard(game, withProgress = false) {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            
+            let progressBar = '';
+            if (withProgress && game.progress) {
+                progressBar = `
+                    <div style="height: 4px; background: #333; border-radius: 3px; margin-top: 6px;">
+                        <div style="height: 100%; width: ${game.progress}; background: var(--accent); border-radius: 3px;"></div>
+                    </div>
+                    <p style="text-align: right; font-size: 0.7rem; margin-top: 3px;">${game.progress} complete</p>
+                `;
+            }
+            
+            let gameTag = '';
+            if (game.type === 'cloud') {
+                gameTag = '<span class="game-tag cloud-tag"><i class="fas fa-cloud"></i> Cloud</span>';
+            } else if (game.type === 'instant') {
+                gameTag = '<span class="game-tag instant-tag"><i class="fas fa-bolt"></i> Instant</span>';
+            }
+            
+            card.innerHTML = `
+                <img src="${game.thumbnail}" alt="${game.title}">
+                ${gameTag}
+                <div class="game-info">
+                    <h4>${game.title}</h4>
+                    <p>${game.developer}</p>
+                    <div class="game-meta">
+                        <div class="rating">${'★'.repeat(game.rating)}${'☆'.repeat(5-game.rating)}</div>
+                        <!-- Price removed -->
+                    </div>
+                    ${progressBar}
+                </div>
+            `;
+            return card;
+        }
+
+        // Populate game sections
+        document.addEventListener('DOMContentLoaded', () => {
+            // Continue Playing section
+            const continuePlayingSection = document.getElementById('continue-playing');
+            games.continuePlaying.forEach(game => {
+                continuePlayingSection.appendChild(createGameCard(game, true));
+            });
+            
+            // Recommended section
+            const recommendedSection = document.getElementById('recommended');
+            games.recommended.forEach(game => {
+                recommendedSection.appendChild(createGameCard(game));
+            });
+            
+            // Trending section
+            const trendingSection = document.getElementById('trending');
+            games.trending.forEach(game => {
+                trendingSection.appendChild(createGameCard(game));
+            });
+            
+            // Cloud Games section
+            const cloudGamesSection = document.getElementById('cloud-games');
+            games.cloudGames.forEach(game => {
+                cloudGamesSection.appendChild(createGameCard(game));
+            });
+            
+            // Instant Games section
+            const instantGamesSection = document.getElementById('instant-games');
+            games.instantGames.forEach(game => {
+                instantGamesSection.appendChild(createGameCard(game));
+            });
+            
+            // Add click event for categories
+            const categories = document.querySelectorAll('.category');
+            categories.forEach(category => {
+                category.addEventListener('click', () => {
+                    categories.forEach(c => c.classList.remove('active'));
+                    category.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

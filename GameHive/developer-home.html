@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHive | Developer Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg: #0f0f1a;
+            --secondary-bg: #1a1a2e;
+            --accent: #6C63FF;
+            --accent-dark: #564fcc;
+            --text: #e2e2e2;
+            --text-light: #a0a0a0;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: var(--primary-bg);
+            color: var(--text);
+        }
+
+        /* Developer Navbar */
+        .dev-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: var(--secondary-bg);
+            border-bottom: 1px solid rgba(108, 99, 255, 0.2);
+        }
+        .dev-nav .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .dev-nav .logo svg {
+            width: 28px;
+            height: 28px;
+        }
+        .dev-nav .logo h1 {
+            font-size: 1.3rem;
+        }
+        .dev-nav .logo span {
+            color: var(--accent);
+        }
+        .dev-actions {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .dev-actions a {
+            color: var(--text-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
+        .dev-actions a:hover {
+            color: var(--accent);
+        }
+        .dev-actions .upload-btn {
+            background: var(--accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        .dev-actions .upload-btn:hover {
+            background: var(--accent-dark);
+        }
+
+        /* Main Dashboard */
+        .dev-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: calc(100vh - 60px);
+        }
+
+        /* Sidebar */
+        .dev-sidebar {
+            background: var(--secondary-bg);
+            padding: 1.5rem;
+            border-right: 1px solid rgba(108, 99, 255, 0.1);
+        }
+        .dev-sidebar h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+        .dev-sidebar ul {
+            list-style: none;
+        }
+        .dev-sidebar li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.7rem 0.5rem;
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        .dev-sidebar li a:hover, 
+        .dev-sidebar li a.active {
+            background: rgba(108, 99, 255, 0.1);
+            color: var(--accent);
+        }
+        .dev-sidebar li a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Dashboard Content */
+        .dev-content {
+            padding: 2rem;
+        }
+        .dev-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .dev-header h2 {
+            font-size: 1.5rem;
+        }
+        .dev-header .greeting {
+            color: var(--text-light);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--secondary-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--accent);
+        }
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        .stat-card .change {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        .stat-card .change.positive {
+            color: #4ade80;
+        }
+        .stat-card .change.negative {
+            color: #f87171;
+        }
+
+        /* Games List */
+        .games-list {
+            background: var(--secondary-bg);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .games-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(108, 99, 255, 0.1);
+        }
+        .games-list-header h3 {
+            font-size: 1.1rem;
+        }
+        .game-item {
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            gap: 1.5rem;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(108, 99, 255, 0.1);
+            align-items: center;
+        }
+        .game-item:last-child {
+            border-bottom: none;
+        }
+        .game-item img {
+            width: 80px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .game-item .game-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+        .game-item .game-info p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        .game-item .game-stats {
+            text-align: right;
+        }
+        .game-item .game-stats .downloads {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        .game-item .game-stats .earnings {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dev-container {
+                grid-template-columns: 1fr;
+            }
+            .dev-sidebar {
+                display: none;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .game-item {
+                grid-template-columns: 60px 1fr;
+            }
+            .game-item .game-stats {
+                grid-column: span 2;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Developer Navigation -->
+    <nav class="dev-nav">
+        <div class="logo">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L3 7L12 12L21 7L12 2Z" stroke="#6C63FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3 12L12 17L21 12" stroke="#6C63FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3 17L12 22L21 17" stroke="#6C63FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h1>Game<span>Hive</span> <small style="font-size:0.7rem;color:var(--text-light)">Dev</small></h1>
+        </div>
+        <div class="dev-actions">
+            <a href="#"><i class="fas fa-bell"></i></a>
+            <a href="#"><i class="fas fa-envelope"></i></a>
+            <a href="#" class="upload-btn"><i class="fas fa-plus"></i> Upload Game</a>
+            <a href="#"><i class="fas fa-user-circle"></i></a>
+        </div>
+    </nav>
+
+    <!-- Developer Dashboard -->
+    <div class="dev-container">
+        <!-- Sidebar -->
+        <aside class="dev-sidebar">
+            <h3>Dashboard</h3>
+            <ul>
+                <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Overview</a></li>
+                <li><a href="#"><i class="fas fa-gamepad"></i> My Games</a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                <li><a href="#"><i class="fas fa-wallet"></i> Earnings</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+
+            <h3>Resources</h3>
+            <ul>
+                <li><a href="#"><i class="fas fa-book"></i> Documentation</a></li>
+                <li><a href="#"><i class="fas fa-comments"></i> Community</a></li>
+                <li><a href="#"><i class="fas fa-question-circle"></i> Support</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dev-content">
+            <div class="dev-header">
+                <div>
+                    <p class="greeting">Welcome back,</p>
+                    <h2>PixelPioneer</h2>
+                </div>
+                <button style="background:var(--accent);color:white;border:none;padding:0.7rem 1.2rem;border-radius:6px;cursor:pointer;">
+                    <i class="fas fa-plus"></i> New Game
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Downloads</h3>
+                    <div class="value">24,581</div>
+                    <div class="change positive"><i class="fas fa-arrow-up"></i> 12% from last month</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Monthly Earnings</h3>
+                    <div class="value">$3,284</div>
+                    <div class="change positive"><i class="fas fa-arrow-up"></i> 8% from last month</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Games</h3>
+                    <div class="value">5</div>
+                    <div class="change">No change</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Avg. Rating</h3>
+                    <div class="value">4.2 <small style="font-size:1rem;color:gold;">★</small></div>
+                    <div class="change negative"><i class="fas fa-arrow-down"></i> 0.3 from last month</div>
+                </div>
+            </div>
+
+            <!-- Games List -->
+            <div class="games-list">
+                <div class="games-list-header">
+                    <h3>Your Games</h3>
+                    <a href="#" style="color:var(--accent);font-size:0.9rem;">View All</a>
+                </div>
+                
+                <div class="game-item">
+                    <img src="/Thumbnails/CyberRunner.jpg" alt="Game Cover">
+                    <div class="game-info">
+                        <h4>Cyber Runner</h4>
+                        <p>Published: 15 May 2023</p>
+                    </div>
+                    <div class="game-stats">
+                        <div class="downloads">8,742 downloads</div>
+                        <div class="earnings">$1,245 earned</div>
+                    </div>
+                </div>
+                
+                <div class="game-item">
+                    <img src="/Thumbnails/PixelFarm.jpg" alt="Game Cover">
+                    <div class="game-info">
+                        <h4>Pixel Farm</h4>
+                        <p>Published: 2 Mar 2023</p>
+                    </div>
+                    <div class="game-stats">
+                        <div class="downloads">12,459 downloads</div>
+                        <div class="earnings">$1,876 earned</div>
+                    </div>
+                </div>
+                
+                <div class="game-item">
+                    <img src="/Thumbnails/NeonRacer .jpg" alt="Game Cover">
+                    <div class="game-info">
+                        <h4>Neon Racer</h4>
+                        <p>Published: 28 Jan 2023</p>
+                    </div>
+                    <div class="game-stats">
+                        <div class="downloads">3,380 downloads</div>
+                        <div class="earnings">$163 earned</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
